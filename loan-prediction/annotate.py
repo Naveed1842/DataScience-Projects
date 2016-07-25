@@ -52,10 +52,10 @@ def annotate(acquisition,counts):
 		del acquisition[column]
 
 
-		acquisition = acquisition.fillna(-1)
-		acquisition = acquisition[acquisition["performance_count"]>settings.MINIMUM_TRACKING_QUARTERS]
+	acquisition = acquisition.fillna(-1)
+	acquisition = acquisition[acquisition["performance_count"]>settings.MINIMUM_TRACKING_QUARTERS]
 
-		return acquisition
+	return acquisition
 
 
 def read():

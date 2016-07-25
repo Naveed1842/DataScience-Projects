@@ -85,5 +85,5 @@ def concatenate(prefix="Acquisition"):
 
 
 if __name__ == "__main__":
-	#concatenate("Acquisition")
+	concatenate("Acquisition")
 	concatenate("Performance")
