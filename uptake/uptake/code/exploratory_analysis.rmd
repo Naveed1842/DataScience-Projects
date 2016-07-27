@@ -1,0 +1,49 @@
+
+```{r p1,cache=TRUE,echo=TRUE,warning=FALSE,message=FALSE,error=FALSE,eval=FALSE}
+
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+
+
+#reading imputed data
+impute_data<-read.csv("impute_training.csv",header=TRUE) 
+
+#removing 1 & last column
+impute_data<-impute_data[-c(1,ncol(impute_data))]
+
+#Function to create category wise Barplot
+category_barplot<-function(category,impute_data){
+data_category<-impute_data[,c(category,"responded")]
+df<-data.frame()
+for (item in levels(data_category[,c(category)])){
+  print(item)
+  totalNo=0
+  totalYes=0
+  for ( i in 1:nrow(data_category)) {
+   
+    if(as.character(data_category[i,1])==as.character(item)){
+      if(data_category[i,2]=="no"){totalNo=totalNo+1}
+      if(data_category[i,2]=="yes"){totalYes=totalYes+1}
+    }
+    row<-cbind(item,yes=totalYes,total=totalYes+totalNo)
+    
+  }
+  df<-rbind(df,row)
+  
+}
+dfm <- melt(df,id.vars=colnames(df)[1])
+dfm$value<-as.integer(dfm$value)
+return (dfm)
+}
+
+
+category<-"previous"
+dfm<-category_barplot(category,impute_data) 
+
+p <- ggplot(dfm, aes(x =item , y = value,fill=variable)) +
+     geom_bar(stat="identity") +ggtitle("month vs Conversion") +labs(y="Total Attempt") + theme(axis.text.x = element_text(face="bold", color="#993333",  size=10, angle=60),axis.text.y = element_blank()) + geom_text(aes(label = value), size = 3)  
+
+p
+
+```

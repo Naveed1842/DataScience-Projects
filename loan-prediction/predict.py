@@ -5,16 +5,19 @@ import settings
 import pandas as pd 
 from sklearn import cross_validation  
 from sklearn.linear_model import LogisticRegression  
+from sklearn.ensemble import RandomForestClassifier 
 from sklearn import metrics  
 
 
 def cross_validate(train):
-	clf=LogisticRegression(random_state=1,class_weight="balanced")  
-
+	#clf=LogisticRegression(random_state=1,class_weight="balanced")  
+	model=RandomForestClassifier(n_estimators=10)
 	predictors = train.columns.tolist()  
 	predictors = [p for p in predictors if p not in settings.NON_PREDICTORS]
 
-	predictions =cross_validation.cross_val_predict(clf,train[predictors],train[settings.TARGET],cv=settings.CV_FOLDS)
+	#predictions =cross_validation.cross_val_predict(clf,train[predictors],train[settings.TARGET],cv=settings.CV_FOLDS)
+	predictions =cross_validation.cross_val_predict(model,train[predictors],train[settings.TARGET],cv=settings.CV_FOLDS)
+
 	return predictions  
 
 
